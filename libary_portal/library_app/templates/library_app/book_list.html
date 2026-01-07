@@ -1,0 +1,31 @@
+{% extends 'library_app/base.html' %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>WHAT’S ALL THE LIBRARIA?</h1>
+        <p>Access Books, eBooks, Music, Movies and more.</p>
+
+        <form method="get" class="search-bar">
+            <input type="text" name="q" placeholder="Search by keyword">
+            <select name="category">
+                <option value="">All Categories</option>
+                <option value="Books">Books</option>
+                <option value="Ebooks">Ebooks</option>
+                <option value="Audio">Audio</option>
+            </select>
+            <button type="submit">SEARCH</button>
+        </form>
+    </div>
+</section>
+
+<section class="categories">
+    <div class="category books">BOOKS</div>
+    <div class="category ebooks">EBOOKS</div>
+    <div class="category dvds">DVDS</div>
+    <div class="category magazines">MAGAZINES</div>
+    <div class="category audio">AUDIO</div>
+    <div class="category eaudio">EAUDIO</div>
+</section>
+
+{% endblock %}

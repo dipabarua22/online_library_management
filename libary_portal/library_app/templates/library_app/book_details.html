@@ -1,0 +1,37 @@
+{% extends 'library_app/base.html' %}
+{% block content %}
+
+<div class="book-detail">
+    <h2>{{ book.title }}</h2>
+    <p>{{ book.author }} | {{ book.category }}</p>
+
+    {% if book.cover %}
+        <img src="{{ book.cover.url }}" width="200">
+    {% endif %}
+
+    <p>{{ book.description }}</p>
+    <p>⭐ Average Rating: {{ avg_rating|default:"No ratings yet" }}</p>
+</div>
+
+<h3>Reviews</h3>
+{% for review in book.reviews.all %}
+<div class="review">
+    <b>{{ review.user.username }}</b><br>
+    {{ review.comment }} ({{ review.rating }}/5)
+</div>
+{% empty %}
+<p>No reviews yet.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'add_review' book.id %}">
+    {% csrf_token %}
+    <textarea name="comment" placeholder="Write your review" required></textarea>
+    <input type="number" name="rating" min="1" max="5" required>
+    <button type="submit">Submit Review</button>
+</form>
+{% else %}
+<p><a href="{% url 'login' %}">Login to write a review</a></p>
+{% endif %}
+
+{% endblock %}

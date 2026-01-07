@@ -1,10 +1,10 @@
-from django.contrib import admin
 from django.urls import path
-from .views import *
+from . import views
 
 urlpatterns = [
-    path("home/", home, name="home"),
-    path("save", save_student, name="save"),
-    path("shop", shopping, name="shop"),
+    path('', views.book_list, name='book_list'),
+    path('book/<int:id>/', views.book_detail, name='book_detail'),
+    path('book/<int:book_id>/review/', views.add_review, name='add_review'),
 
+    path('register/', views.register, name='register'),
 ]
