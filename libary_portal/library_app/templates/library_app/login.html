@@ -1,8 +1,20 @@
 {% extends 'library_app/base.html' %}
+
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h2>Login</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="auth-link">
+      Don’t have an account?
+      <a href="{% url 'register' %}">Register</a>
+    </div>
+  </div>
+</div>
 {% endblock %}

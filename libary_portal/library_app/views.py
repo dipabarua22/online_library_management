@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q, Avg
 
+# ---------------- BOOK VIEWS (UNCHANGED) ----------------
+
 def book_list(request):
     query = request.GET.get('q')
     category = request.GET.get('category')
@@ -39,10 +41,15 @@ def add_review(request, book_id):
         )
     return redirect('book_detail', id=book_id)
 
+# ---------------- AUTH VIEW (SEPARATE) ----------------
 
 def register(request):
-    form = UserCreationForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('login')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+
     return render(request, 'library_app/register.html', {'form': form})
