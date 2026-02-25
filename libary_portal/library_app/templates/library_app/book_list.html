@@ -7,7 +7,7 @@
         <p>Access Books, eBooks, Music, Movies and more.</p>
 
         <form method="get" class="search-bar">
-            <input type="text" name="q" placeholder="Search by keyword">
+            <input type="text" name="q" placeholder="Search by keyword" value="{{ query }}">
             <select name="category">
                 <option value="">All Categories</option>
                 <option value="Books">Books</option>
@@ -19,13 +19,29 @@
     </div>
 </section>
 
-<section class="categories">
-    <div class="category books">BOOKS</div>
-    <div class="category ebooks">EBOOKS</div>
-    <div class="category dvds">DVDS</div>
-    <div class="category magazines">MAGAZINES</div>
-    <div class="category audio">AUDIO</div>
-    <div class="category eaudio">EAUDIO</div>
-</section>
+<h2>All Books</h2>
+
+{% if query %}
+  <p>Search results for "<b>{{ query }}</b>"</p>
+{% endif %}
+
+<div class="book-grid">
+{% for book in books %}
+  <div class="book-card">
+      <h3>{{ book.title }}</h3>
+      <p>{{ book.author }}</p>
+
+      {% if book.cover %}
+        <img src="{{ book.cover.url }}" width="120">
+      {% endif %}
+
+      <a href="{% url 'book_detail' book.id %}">
+        View Details
+      </a>
+  </div>
+{% empty %}
+  <p>No matching books found.</p>
+{% endfor %}
+</div>
 
 {% endblock %}

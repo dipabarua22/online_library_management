@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Books</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f6f9;
+            margin:0;
+            padding:40px;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+            gap:25px;
+        }
+
+        .card{
+            background:white;
+            border-radius:10px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.1);
+            overflow:hidden;
+            transition:0.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+        }
+
+        .card img{
+            width:100%;
+            height:280px;
+            object-fit:cover;
+        }
+
+        .card-body{
+            padding:15px;
+        }
+
+        .title{
+            font-size:18px;
+            font-weight:bold;
+        }
+
+        .author{
+            color:gray;
+            margin:5px 0;
+        }
+
+        .btn{
+            display:inline-block;
+            padding:8px 14px;
+            background:#007bff;
+            color:white;
+            text-decoration:none;
+            border-radius:5px;
+            margin-top:10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>All Books</h1>
+
+<div class="grid">
+    {% for book in books %}
+    <div class="card">
+
+        {% if book.cover %}
+            <img src="{{ book.cover.url }}">
+        {% else %}
+            <img src="https://via.placeholder.com/300x400">
+        {% endif %}
+
+        <div class="card-body">
+            <div class="title">{{ book.title }}</div>
+            <div class="author">by {{ book.author }}</div>
+            <div>{{ book.category }}</div>
+
+            <a href="{% url 'book_detail' book.id %}" class="btn">
+                View Details
+            </a>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

@@ -12,7 +12,7 @@
     <div><strong>LIBRARIA</strong></div>
     <div>
         <a href="/">Home</a>
-        <a href="#">Books & Media</a>
+       <a href="{% url 'all_books' %}">Books & Media</a>
         <a href="#">News & Events</a>
         <a href="#">Blog</a>
       {% if user.is_authenticated %}
