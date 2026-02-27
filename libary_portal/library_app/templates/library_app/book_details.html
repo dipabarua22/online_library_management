@@ -78,5 +78,38 @@
 
 </div>
 
+<hr>
+
+<!-- ⭐ REVIEWS SECTION -->
+<h2>Reviews</h2>
+
+{% if avg_rating %}
+<p><strong>Average Rating:</strong> {{ avg_rating|floatformat:1 }} / 5</p>
+{% endif %}
+
+{% for review in reviews %}
+<div class="review-card">
+    <strong>{{ review.user.username }}</strong>
+    <span>⭐ {{ review.rating }}/5</span>
+    <p>{{ review.comment }}</p>
+</div>
+{% empty %}
+<p>No reviews yet.</p>
+{% endfor %}
+
+
+<!-- ⭐ ADD REVIEW FORM HERE -->
+{% if user.is_authenticated %}
+<h3>Write a Review</h3>
+
+<form method="post" action="{% url 'add_review' book.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="details-btn">Submit Review</button>
+</form>
+
+{% else %}
+<p>Please login to review this book.</p>
+{% endif %}
 </body>
 </html>

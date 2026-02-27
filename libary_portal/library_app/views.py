@@ -5,6 +5,7 @@ from .models import Book, Review
 from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm
 from .models import Book   # adjust model name if different
+from .forms import ReviewForm
 
 def all_books(request):
     books = Book.objects.all()
@@ -21,13 +22,17 @@ def register(request):
 
     return render(request, "library_app/register.html", {"form": form})
 
-def book_detail(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
-    avg_rating = book.reviews.aggregate(Avg("rating"))["rating__avg"]
+def book_detail(request, id):
+    book = get_object_or_404(Book, id=id)
+    reviews = book.reviews.all().order_by('-created_at')
+    avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    form = ReviewForm()
 
-    return render(request, "library_app/book_details.html", {
-        "book": book,
-        "avg_rating": avg_rating
+    return render(request, 'library_app/book_details.html', {
+        'book': book,
+        'reviews': reviews,
+        'avg_rating': avg_rating,
+        'form': form
     })
 
 def book_list(request):
@@ -53,17 +58,14 @@ def book_list(request):
 
 @login_required
 def add_review(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+
     if request.method == "POST":
-        book = get_object_or_404(Book, id=book_id)
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.book = book
+            review.user = request.user
+            review.save()
 
-        comment = request.POST.get("comment")
-        rating = request.POST.get("rating")
-
-        Review.objects.create(
-            book=book,
-            user=request.user,
-            comment=comment,
-            rating=rating
-        )
-
-        return redirect("book_detail", book_id=book.id)
+    return redirect("book_detail", id=book.id)

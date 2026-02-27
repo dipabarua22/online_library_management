@@ -21,10 +21,10 @@ class Book(models.Model):
 
 
 class Review(models.Model):
-    book = models.ForeignKey(Book, related_name='reviews', on_delete=models.CASCADE)
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField()
     comment = models.TextField()
-    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
